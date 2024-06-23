@@ -15,6 +15,7 @@ interface types {
 }
 world calculator {
 	use types.{ operation };
+	import log: func(msg: string);
 
 	export calc: func(o: operation) -> u32;
 }

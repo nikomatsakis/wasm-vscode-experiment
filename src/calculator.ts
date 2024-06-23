@@ -77,6 +77,7 @@ export type Types = {
 export namespace calculator {
 	export type Operation = Types.Operation;
 	export type Imports = {
+		log: (msg: string) => void;
 	};
 	export type Exports = {
 		calc: (o: Operation) => u32;
@@ -102,6 +103,11 @@ export namespace Types._ {
 }
 export namespace calculator.$ {
 	export const Operation = Types.$.Operation;
+	export namespace imports {
+		export const log = new $wcm.FunctionType<calculator.Imports['log']>('log',[
+			['msg', $wcm.wstring],
+		], undefined);
+	}
 	export namespace exports {
 		export const calc = new $wcm.FunctionType<calculator.Exports['calc']>('calc',[
 			['o', Operation],
@@ -111,6 +117,23 @@ export namespace calculator.$ {
 export namespace calculator._ {
 	export const id = 'vscode:example/calculator' as const;
 	export const witName = 'calculator' as const;
+	export type $Root = {
+		'log': (msg_ptr: i32, msg_len: i32) => void;
+	};
+	export type Imports = {
+		'$root': $Root;
+	};
+	export namespace imports {
+		export const functions: Map<string, $wcm.FunctionType> = new Map([
+			['log', $.imports.log]
+		]);
+		export function create(service: calculator.Imports, context: $wcm.WasmContext): Imports {
+			return $wcm.Imports.create<Imports>(_, service, context);
+		}
+		export function loop(service: calculator.Imports, context: $wcm.WasmContext): calculator.Imports {
+			return $wcm.Imports.loop(_, service, context);
+		}
+	}
 	export type Exports = {
 		'calc': (o_Operation_case: i32, o_Operation_0: i32, o_Operation_1: i32) => i32;
 	};
