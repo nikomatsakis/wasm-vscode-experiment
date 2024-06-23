@@ -44,6 +44,6 @@
     "node": "20.15.0"
   },
   "dependencies": {
-    "@vscode/wasm-component-model": "^0.1.0-pre.1"
+    "@vscode/wasm-component-model": "^0.1.0-pre.11"
   }
 }
