@@ -2,8 +2,13 @@ package vscode:example;
 
 interface types {
 	record operands {
-		left: u32,
-		right: u32
+		left: operand,
+		right: operand,
+	}
+
+	variant operand {
+		integer(u32),
+		variable(string),
 	}
 
 	variant operation {
@@ -12,10 +17,22 @@ interface types {
 		mul(operands),
 		div(operands)
 	}
-}
-world calculator {
-	use types.{ operation };
-	import log: func(msg: string);
 
-	export calc: func(o: operation) -> u32;
+	resource with-operand-value {
+		value: func(value: u32);
+	}
+
+	resource with-calc-result {
+		ready: func(value: u32);
+	}
+}
+
+world calculator {
+	use types.{operation, with-operand-value, with-calc-result};
+
+	import log: func(msg: string);
+	import resolve-variable: func(name: string, wov: with-operand-value);
+
+	export calc: func(o: operation, wr: with-calc-result);
+	export types;
 }
